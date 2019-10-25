@@ -116,5 +116,13 @@ public class NioClient extends AbstractClient {
     @Override
     public void close() {
 
+        try {
+            if(null!=selectorHolder.selector()){
+                selectorHolder.selector().close();
+            }
+            socketChannel.close();
+        } catch (IOException e) {
+            logger.error(e.getMessage(),e);
+        }
     }
 }

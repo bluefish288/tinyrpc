@@ -7,9 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public interface Cluster {
 
-    ResponseFuture send(Request request) throws InterruptedException, RpcException;
+    public ResponseFuture send(Request request) throws InterruptedException, RpcException;
 
-    void close();
+    public void close();
 
     public static enum Type{
 

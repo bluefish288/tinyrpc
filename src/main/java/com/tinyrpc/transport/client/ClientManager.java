@@ -8,12 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientManager implements ServiceListener {
 
     private final static Logger logger = LoggerFactory.getLogger(ClientManager.class);
 
-    private ConcurrentHashMap<InvokeKey, LinkedHashSet<Client>> clientsMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<InvokeKey, CopyOnWriteArrayList<Client>> clientsMap = new ConcurrentHashMap<>();
 
     public final static ClientManager INSTANCE = new ClientManager();
 
@@ -23,9 +24,9 @@ public class ClientManager implements ServiceListener {
             return;
         }
 
-        LinkedHashSet<Client> clients = clientsMap.get(invokeKey);
+        CopyOnWriteArrayList<Client> clients = clientsMap.get(invokeKey);
         if (null == clients) {
-            clientsMap.put(invokeKey, new LinkedHashSet<>());
+            clientsMap.put(invokeKey, new CopyOnWriteArrayList<>());
             clients = clientsMap.get(invokeKey);
         }
 
