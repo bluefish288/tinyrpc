@@ -44,7 +44,7 @@ public class ServiceContext {
 
     private boolean valid(ServiceConfig serviceConfig) {
         String serviceName = serviceConfig.getInterCls().getName();
-        Class<?>[] serviceInters = serviceName.getClass().getInterfaces();
+        Class<?>[] serviceInters = serviceConfig.getService().getClass().getInterfaces();
         if(serviceInters.length == 0){
             return false;
         }

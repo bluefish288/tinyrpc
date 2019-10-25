@@ -27,7 +27,13 @@ public class ServiceProcessor {
 
     public Object getValue(Request request){
 
-        Object service = serviceContext.getService(request);
+        Object service = null;
+
+        try {
+            service = serviceContext.getService(request);
+        }catch (Throwable throwable){
+            return wrapThrowable(null, throwable);
+        }
 
         final Method method = getMethod(service.getClass(),request.getMethodName(), request.getParameterTypes());
 
@@ -48,10 +54,14 @@ public class ServiceProcessor {
             return wrapThrowable(null, new NoSuchMethodException(message));
         }
 
+        return execute(service, method, request.getArguments());
+    }
+
+    private Object execute(final Object service, final Method method, final Object[] args){
         Future<Object> future = executor.submit(() -> {
             MDC.put("THREAD_NAME",Thread.currentThread().getName());
             logger.info("request-call");
-            return method.invoke(service, request.getArguments());
+            return method.invoke(service, args);
         });
 
         Object value = null;
