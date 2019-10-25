@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tinyrpc="tinyrpc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+tinyrpc
+META-INF/tinyrpc.xsd"
+       default-lazy-init="false" default-autowire="byName">
+
+    <tinyrpc:register id="registerBean" connectStr="123.57.173.142:3181,123.57.173.142:3182,123.57.173.142:3183"/>
+
+    <bean id="demoHelloService" class="test.com.tinyrpc.mock.DemoHelloService"/>
+
+    <tinyrpc:provider id="providerBean" interface="test.com.tinyrpc.mock.HelloService"
+                       ref="demoHelloService" group="test_group_1" version="1.0.1" weight="10"/>
+
+    <tinyrpc:provider id="providerBean2" interface="test.com.tinyrpc.mock.HelloService"
+                      ref="demoHelloService" group="test_group_1" version="1.0.2" weight="20"/>
+
+    <tinyrpc:provider id="providerBean21" interface="test.com.tinyrpc.mock.HelloService"
+                      ref="demoHelloService" group="test_group_1" version="1.0.2" weight="20"/>
+
+    <tinyrpc:provider id="providerBean22" interface="test.com.tinyrpc.mock.HelloService"
+                      ref="demoHelloService" group="test_group_1" version="1.0.2" weight="20"/>
+
+    <tinyrpc:discover id="discoverBean" connectStr="123.57.173.142:3181,123.57.173.142:3182,123.57.173.142:3183"/>
+    <tinyrpc:reference id="helloReference" interface="test.com.tinyrpc.mock.HelloService" cluster="failover" loadbalance="random" retries="3" group="test_group_1" version="1.0.2"/>
+
+</beans>
+
+
+

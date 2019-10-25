@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" monitorInterval="60">
+    <properties>
+        <property name="LOG_HOME">/tmp/tinyrpc</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%-5level] [%logger{5}] %msg%n"/>
+            <!--<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>-->
+        </Console>
+
+        <RollingRandomAccessFile name="RollingLog"
+                                 fileName="${LOG_HOME}/rolling.log"
+                                 filePattern="${LOG_HOME}/rolling.%d{yyyy-MM-dd}.log">
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} [%-5level] [%logger{5}] %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="ProcessLog"
+                                 fileName="${LOG_HOME}/process.log"
+                                 filePattern="${LOG_HOME}/process.%d{yyyy-MM-dd}.log">
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} [%-5level] [%logger{5}] [%X{THREAD_NAME}] %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="ErrorLog"
+                                 fileName="${LOG_HOME}/error.log"
+                                 filePattern="${LOG_HOME}/error.log.%d{yyyy-MM-dd}.log">
+            <PatternLayout
+                    pattern="%d{HH:mm:ss.SSS} [%-5level] [%logger{5}] %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+
+
+    <Loggers>
+        <Logger name="com.tinyrpc" level="debug" additivity="false">
+            <AppenderRef ref="ProcessLog"/>
+        </Logger>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingLog"/>
+            <AppenderRef ref="ErrorLog"/>
+        </Root>
+    </Loggers>
+</Configuration>
