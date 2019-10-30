@@ -12,6 +12,7 @@ public class RpcException extends RuntimeException{
     public static final int NO_INVOKER_AVAILABLE = 6;
     public static final int LIMIT_EXCEEDED_EXCEPTION = 7;
     public static final int CONFIG_ERROR = 8;
+    public static final int NO_SERVICE_EXIST = 9;
 
     private int code = UNKNOWN_EXCEPTION;
 

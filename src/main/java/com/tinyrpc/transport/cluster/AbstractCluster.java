@@ -47,6 +47,9 @@ public abstract class AbstractCluster implements Cluster {
     @Override
     public ResponseFuture send(Request request) throws InterruptedException, RpcException {
         List<Client> clients = clientManager.getClients(new InvokeKey(request.getGroup(), request.getInterfaceName(),request.getVersion()));
+        if(clients.size() == 0){
+            throw new RpcException(RpcException.NO_SERVICE_EXIST);
+        }
         return this.doSend(request, clients, loadBalance, invokeConfig);
     }
 
