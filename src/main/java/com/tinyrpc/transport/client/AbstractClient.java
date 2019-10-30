@@ -6,6 +6,8 @@ public abstract class AbstractClient implements Client {
 
     private int remotePort;
 
+    private volatile boolean active = true;
+
     protected ResponseHandler responseHandler = new DefaultResponseHandler();
 
     public AbstractClient(String remoteHost, int remotePort) {
@@ -21,6 +23,16 @@ public abstract class AbstractClient implements Client {
     @Override
     public int getRemotePort() {
         return remotePort;
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.active;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

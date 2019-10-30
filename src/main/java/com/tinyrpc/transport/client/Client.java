@@ -11,6 +11,10 @@ public interface Client {
 
     public void connect() throws InterruptedException;
 
+    public boolean isActive();
+
+    public void setActive(boolean active);
+
     public ResponseFuture send(Request request) throws InterruptedException;
 
     public void close();

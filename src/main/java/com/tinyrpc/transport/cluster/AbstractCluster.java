@@ -15,6 +15,7 @@ import com.tinyrpc.transport.loadbalance.LoadBalanceFactory;
 import com.tinyrpc.transport.server.InvokeKey;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractCluster implements Cluster {
 
@@ -46,7 +47,8 @@ public abstract class AbstractCluster implements Cluster {
 
     @Override
     public ResponseFuture send(Request request) throws InterruptedException, RpcException {
-        List<Client> clients = clientManager.getClients(new InvokeKey(request.getGroup(), request.getInterfaceName(),request.getVersion()));
+        List<Client> clients = clientManager.getClients(new InvokeKey(request.getGroup(), request.getInterfaceName(),request.getVersion()))
+                .stream().filter(Client::isActive).collect(Collectors.toList());
         if(clients.size() == 0){
             throw new RpcException(RpcException.NO_SERVICE_EXIST);
         }
