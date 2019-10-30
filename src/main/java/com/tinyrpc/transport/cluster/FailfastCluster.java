@@ -17,7 +17,7 @@ public class FailfastCluster extends AbstractCluster {
     }
 
     @Override
-    public ResponseFuture doSend(Request request, List<Client> clients, LoadBalance loadBalance, InvokeConfig<?> invokeConfig) throws InterruptedException, RpcException {
+    public ResponseFuture doSend(final Request request, final List<Client> clients, final LoadBalance loadBalance, final InvokeConfig<?> invokeConfig) throws InterruptedException, RpcException {
 
         Client client = loadBalance.select(clients, request);
 

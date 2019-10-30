@@ -53,7 +53,7 @@ public abstract class AbstractCluster implements Cluster {
         return this.doSend(request, clients, loadBalance, invokeConfig);
     }
 
-    protected abstract ResponseFuture doSend(Request request, List<Client> clients, LoadBalance loadBalance, InvokeConfig<?> invokeConfig) throws InterruptedException, RpcException;
+    protected abstract ResponseFuture doSend(final Request request, final List<Client> clients, final LoadBalance loadBalance, final InvokeConfig<?> invokeConfig) throws InterruptedException, RpcException;
 
     @Override
     public void close(){

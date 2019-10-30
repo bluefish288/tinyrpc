@@ -10,6 +10,7 @@ import com.tinyrpc.transport.client.InvokeConfig;
 import com.tinyrpc.transport.loadbalance.LoadBalance;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class FailoverCluster extends AbstractCluster {
 
@@ -19,7 +20,7 @@ public class FailoverCluster extends AbstractCluster {
     }
 
     @Override
-    protected ResponseFuture doSend(Request request, List<Client> clients, LoadBalance loadBalance, InvokeConfig<?> invokeConfig) throws InterruptedException, RpcException {
+    protected ResponseFuture doSend(final Request request, final List<Client> clients, final LoadBalance loadBalance, final InvokeConfig<?> invokeConfig) throws InterruptedException, RpcException {
 
         Throwable lastError = null;
 
@@ -30,14 +31,17 @@ public class FailoverCluster extends AbstractCluster {
         int maxInvokeTimes = retries + 1;
 
         ResponseFuture future = null;
+
+        List<Client> clientsToSelect = new CopyOnWriteArrayList<>(clients);
         for (int index = 0; index < maxInvokeTimes; index++) {
-            Client client = loadBalance.select(clients, request);
+            Client client = loadBalance.select(clientsToSelect, request);
             try {
                 future = client.send(request);
                 future.setTimeout(invokeConfig.getTimeout());
                 return future;
             } catch (Exception e) {
                 lastError = e;
+                clientsToSelect.remove(client);
             }
         }
 
