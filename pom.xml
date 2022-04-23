@@ -12,7 +12,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.test.skip>true</maven.test.skip>
-        <spring.version>4.3.18.RELEASE</spring.version>
+        <spring.version>5.3.19</spring.version>
     </properties>
 
     <build>
